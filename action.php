@@ -4,7 +4,7 @@
  * 
  * PHP Version 5.3.10
  * 
- * @category Plugi
+ * @category Plugin
  * @package  DokuWiki
  * @author   Pierre Rudloff <contact@rudloff.pro>
  * @license  http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License
