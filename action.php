@@ -85,7 +85,7 @@ class Action_Plugin_Browserid extends DokuWiki_Action_Plugin
             curl_setopt(
                 $curl, CURLOPT_POSTFIELDS, "assertion=".strval(
                     $_GET["assertion"]
-                )."&audience=localhost"
+                )."&audience=".DOKU_URL
             );
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             $response=json_decode(strval(curl_exec($curl)));
