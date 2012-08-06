@@ -7,7 +7,16 @@ var initLogin = function () {
     document.head.appendChild(script);
     login = function (assertion) {
         if (assertion) {
-            document.location = "doku.php?do=login&assertion=" + assertion;
+            var form = document.createElement('form');
+            form.setAttribute('action', "doku.php?do=login");
+            form.setAttribute('method', 'post');
+            var postvar = document.createElement('input');
+            postvar.setAttribute('type', 'hidden');
+            postvar.setAttribute('name', "assertion");
+            postvar.setAttribute('value', assertion);
+            form.appendChild(postvar);
+            document.body.appendChild(form);
+            form.submit();
         }
     };
     connect = function (e) {

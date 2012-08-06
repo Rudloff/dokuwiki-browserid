@@ -80,17 +80,16 @@ class Action_Plugin_Browserid extends DokuWiki_Action_Plugin
     function login(&$event) 
     {
         $curl = curl_init("https://browserid.org/verify");
-        if (isset($_GET["assertion"])) {
+        if (isset($_POST["assertion"])) {
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt(
                 $curl, CURLOPT_POSTFIELDS, "assertion=".strval(
-                    $_GET["assertion"]
+                    $_POST["assertion"]
                 )."&audience=".DOKU_URL
             );
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             $response=json_decode(strval(curl_exec($curl)));
             curl_close($curl);
-             
             if ($response->status==="okay") {
                 global $auth;
                 $filter['mail']=$response->email;
