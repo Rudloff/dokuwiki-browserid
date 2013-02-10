@@ -90,11 +90,13 @@ class Action_Plugin_Browserid extends DokuWiki_Action_Plugin
                 $response=json_decode(strval(curl_exec($curl)));
                 curl_close($curl);
             } else {
-                $context=stream_context_create(array("http" => array(
+                $context=stream_context_create(
+                    array("http" => array(
                     "method"  => "POST",
                     "header"  => "Content-type: application/x-www-form-urlencoded",
                     "content" => $postdata,
-                )));
+                    ))
+                );
                 $result=@file_get_contents($url, false, $context);
                 if ($result !== false) {
                     $response=json_decode(strval($result));

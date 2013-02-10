@@ -7,10 +7,9 @@ var initLogin = function () {
     document.head.appendChild(script);
     login = function (assertion) {
         if (assertion) {
-            var form = document.createElement('form');
+            var form = document.createElement('form'), postvar = document.createElement('input');
             form.setAttribute('action', "doku.php?do=login");
             form.setAttribute('method', 'post');
-            var postvar = document.createElement('input');
             postvar.setAttribute('type', 'hidden');
             postvar.setAttribute('name', "assertion");
             postvar.setAttribute('value', assertion);
