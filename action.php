@@ -79,18 +79,29 @@ class Action_Plugin_Browserid extends DokuWiki_Action_Plugin
      * */
     function login(&$event) 
     {
-        $curl = curl_init("https://browserid.org/verify");
         if (isset($_POST["assertion"])) {
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt(
-                $curl, CURLOPT_POSTFIELDS, "assertion=".strval(
-                    $_POST["assertion"]
-                )."&audience=".DOKU_URL
-            );
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            $response=json_decode(strval(curl_exec($curl)));
-            curl_close($curl);
-            if ($response->status==="okay") {
+            $url="https://browserid.org/verify";
+            $postdata="assertion=".strval($_POST["assertion"])."&audience=".DOKU_URL;
+            if (function_exists("curl_init")) {
+                $curl = curl_init("$url");
+                curl_setopt($curl, CURLOPT_POST, 1);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                $response=json_decode(strval(curl_exec($curl)));
+                curl_close($curl);
+            } else {
+                $context=stream_context_create(array("http" => array(
+                    "method"  => "POST",
+                    "header"  => "Content-type: application/x-www-form-urlencoded",
+                    "content" => $postdata,
+                )));
+                $result=@file_get_contents($url, false, $context);
+                if ($result !== false) {
+                    $response=json_decode(strval($result));
+                }
+            }
+
+            if (isset($response) && $response->status==="okay") {
                 global $auth;
                 $filter['mail']=$response->email;
                 $users = $auth->retrieveUsers(0, 0, $filter);
