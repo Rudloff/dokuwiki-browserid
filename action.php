@@ -112,6 +112,8 @@ class Action_Plugin_Browserid extends DokuWiki_Action_Plugin
                         $_SERVER['REMOTE_USER'] = $user;
                         global $USERINFO;
                         $USERINFO = $auth->getUserData($user);
+                        $pass = PMA_blowfish_encrypt($user, auth_cookiesalt());
+                        auth_setCookie($user, $pass, false);
                         $event->preventDefault();
                     }
                 } else {
