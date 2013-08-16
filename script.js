@@ -3,7 +3,8 @@ var initLogin = function () {
     "use strict";
     var login, connect, loginBtn, script;
     script = document.createElement("script");
-    script.setAttribute("src", "https://browserid.org/include.js");
+    script.setAttribute("src", "https://login.persona.org/include.js");
+    // You might want to do this towards the end of the page, to speed its load.
     document.head.appendChild(script);
     login = function (assertion) {
         if (assertion) {
