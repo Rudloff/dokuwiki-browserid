@@ -80,13 +80,15 @@ class Action_Plugin_Browserid extends DokuWiki_Action_Plugin
     function login(&$event) 
     {
         if (isset($_POST["assertion"])) {
-            $url="https://browserid.org/verify";
+            $url="https://verifier.login.persona.org/verify";
             $postdata="assertion=".strval($_POST["assertion"])."&audience=".DOKU_URL;
             if (function_exists("curl_init")) {
                 $curl = curl_init("$url");
                 curl_setopt($curl, CURLOPT_POST, 1);
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2); 
                 $response=json_decode(strval(curl_exec($curl)));
                 curl_close($curl);
             } else {
